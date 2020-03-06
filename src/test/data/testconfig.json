@@ -1,0 +1,9 @@
+{
+	"username":"us3Rname",
+	"password":"pas5Word",
+	"auth_host":"localhost",
+	"auth_endpoint":"/auth",
+	"storage_host":"localhost",
+	"storage_endpoint":"/storage",
+	"port":5000
+}
