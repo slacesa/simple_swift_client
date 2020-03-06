@@ -1,0 +1,27 @@
+[
+	{
+		"hash": "f8d617ad39eac17091a416e0849532b3",
+		"name": "existing.txt",
+		"bytes": 10,
+		"policy_retrieval_delay": null,
+		"last_modified": "2020-02-21T12:46:00.717960",
+		"content_type": "text/plain;charset=utf-8",
+		"policy_retrieval_state": "unsealed"
+	},
+	{
+		"hash": "f8d617ad39eac17091a416e0849532b3",
+		"name": "sealed.txt",
+		"bytes": 10,
+		"policy_retrieval_delay": 100,
+		"last_modified": "2020-02-21T12:46:00.717960",
+		"content_type": "text/plain;charset=utf-8",
+		"policy_retrieval_state": "unsealing"
+	},
+	{
+		"hash": "f8d617ad39eac17091a416e0849532b3",
+		"name": "no_policy_retrieval.txt",
+		"bytes": 10,
+		"last_modified": "2020-02-21T12:46:00.717960",
+		"content_type": "text/plain;charset=utf-8"
+	}
+]
