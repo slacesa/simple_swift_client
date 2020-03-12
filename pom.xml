@@ -4,7 +4,7 @@
 
     <groupId>io.github.slacesa.simpleSwiftClient</groupId>
     <artifactId>simple_swift_client</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
 
 	<name>Simple Swift Client</name>
 	<description>A simple swift Client, providing basic Keystone v3 methods for authentication and simple access to files </description>
@@ -211,7 +211,7 @@
 		<connection>scm:git:git://github.com/slacesa/dependent-tasks-executor.git</connection>
 		<developerConnection>scm:git:git@github.com:slacesa/simple_swift_client.git</developerConnection>
 		<url>https://github.com/slacesa/simple_swift_client</url>
-		<tag>simple_swift_client-1.0.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
