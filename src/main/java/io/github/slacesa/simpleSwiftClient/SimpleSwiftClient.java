@@ -172,12 +172,16 @@ public class SimpleSwiftClient {
 	}
 
 	/**
-	 * TODO Not implemented yet
+	 * Deletes a file
 	 * @param filename the file name to delete
 	 * @return a future true if the file was deleted
 	 */
 	public Future<Boolean> deleteFile(String filename) {
-		return Future.failedFuture(new NoSuchMethodException("Not implemented"));
+		Promise<Boolean> result = Promise.promise();
+		deleter(filename).setHandler(isDeleted ->{
+			result.complete(isDeleted.succeeded() && isDeleted.result());
+		});
+		return result.future();
 	}
 
 	/**
@@ -279,6 +283,27 @@ public class SimpleSwiftClient {
 		.send(response -> {
 			if(response.succeeded())
 				result.complete(response.result());
+			else result.fail(response.cause());
+		});
+		return result.future();
+	}
+
+	/**
+	 * Multi purpose deleter: can delete a container if empty (filename == null) or delete a file (returns 204 when successful)
+	 * @return an HttpResponse with the result
+	 */
+	private Future<Boolean> deleter(String filename) {
+		Promise<Boolean> result = Promise.promise();
+		webclient.delete(
+				config.getPort(),
+				config.getStorage_host(),
+				config.getStorage_endpoint()+"/"+filename)
+		.ssl(config.getPort()==443)
+		.putHeader("Accept", "application/json")
+		.putHeader("X-Auth-Token", token)
+		.send(response -> {
+			if(response.succeeded())
+				result.complete(response.result().statusCode() == 204);
 			else result.fail(response.cause());
 		});
 		return result.future();
