@@ -79,6 +79,7 @@ public class SimpleSwiftTestServer {
 		router.route(config.getStorage_endpoint()+"/*").handler(BodyHandler.create());
 		router.get(config.getStorage_endpoint()+"/*").handler(this::getFile);
 		router.put(config.getStorage_endpoint()+"/*").handler(this::putFile);
+		router.delete(config.getStorage_endpoint()+"/*").handler(this::deleteFile);
 
 		vertx.createHttpServer().requestHandler(router)
 		.listen(config.getPort(), ar -> {
@@ -147,5 +148,29 @@ public class SimpleSwiftTestServer {
 			return;
 		}
 		routingContext.response().setStatusCode(201).end();
+	}
+
+	private void deleteFile(RoutingContext routingContext) {
+		if(!testToken.equals(routingContext.request().getHeader("X-Auth-Token"))) {
+			routingContext.fail(400);
+			return;
+		}
+		String filename = null;
+		for(String p : routingContext.normalisedPath().split("/")) {
+			filename = p;
+		}
+		boolean found = false;
+		for(SwiftFile file : fileList) {
+			if(filename!=null && filename.equals(file.getName())) {
+				found = true;
+				routingContext.response().setStatusCode(204)
+				.putHeader("Content-Length", "0")
+				.putHeader("X-Trans-Id", "txcf8e98d30f714c85a323d-0058c16813")
+				.putHeader("X-Openstack-Request-Id", "txcf8e98d30f714c85a323d-0058c16813")
+				.putHeader("Date",new DateTime().toString())
+				.end();
+			}
+		}
+		if(!found) routingContext.response().setStatusCode(404).end();
 	}
 }

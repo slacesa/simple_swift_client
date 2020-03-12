@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.github.slacesa.simpleSwiftClient.SimpleSwiftClient;
 import io.github.slacesa.simpleSwiftClient.resources.SwiftConfig;
+import io.github.slacesa.simpleSwiftClient.resources.SwiftFile;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
@@ -82,7 +83,11 @@ public class SimpleSwiftClientTest {
 	void getFileList(Vertx vertx, VertxTestContext testContext) throws Throwable {
 		client.getFileList().setHandler(ar -> {
 			if(ar.succeeded()) {
-				if(ar.result() != null) log.info("Test File list Size " + ar.result().size());
+				if(ar.result() != null) {
+					log.info("Test File list Size " + ar.result().size());
+					for(SwiftFile file: ar.result())
+						log.debug("* " + file.getName());
+				}
 				testContext.completeNow();
 			}
 			else {
@@ -161,6 +166,25 @@ public class SimpleSwiftClientTest {
 			if(ar.succeeded() && ar.result()) testContext.failNow(new NoStackTraceThrowable("Expected to fail, file not found"));
 			else if(ar.succeeded()) testContext.failNow(new NoStackTraceThrowable("Not the desired status code"));
 			else notFound.flag();
+		});
+	}
+
+	@Test
+	@DisplayName("deleteFile")
+	void deleteFile(Vertx vertx, VertxTestContext testContext) throws Throwable {
+		Checkpoint notFound = testContext.checkpoint(1);
+		Checkpoint success = testContext.checkpoint(1);
+
+		client.deleteFile("notfound.txt").setHandler(ar ->{
+			if(ar.succeeded() && ar.result()) testContext.failNow(new NoStackTraceThrowable("Expected to fail, file not found"));
+			else if(ar.succeeded())
+				notFound.flag();
+			else testContext.failNow(ar.cause());
+		});
+
+		client.deleteFile("existing.txt").setHandler(ar ->{
+			if(ar.succeeded()) success.flag();
+			else testContext.failNow(ar.cause());
 		});
 	}
 
