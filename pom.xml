@@ -30,9 +30,9 @@
     <properties>
         <java.version>1.8</java.version>
         <vertx.version>3.8.5</vertx.version>
-        <slf4j.version>1.7.21</slf4j.version>
-        <zip4j.version>2.3.2</zip4j.version>
-        <jodatime.version>2.1</jodatime.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <zip4j.version>2.5.0</zip4j.version>
+        <jodatime.version>2.10.5</jodatime.version>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -114,6 +114,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -162,18 +163,21 @@
 				<groupId>io.vertx</groupId>
 				<artifactId>vertx-web</artifactId>
 				<version>${vertx.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>io.vertx</groupId>
 				<artifactId>vertx-unit</artifactId>
 				<version>${vertx.version}</version>
+				<scope>test</scope>
 			</dependency>
 		
 			<dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-junit5</artifactId>
                 <version>${vertx.version}</version>
+                <scope>test</scope>
             </dependency>
 		
 			<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->

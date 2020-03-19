@@ -66,7 +66,7 @@ public class SwiftFile {
 
 	/**
 	 * The file content type
-	 * @return
+	 * @return the file content type
 	 */
 	public String getContent_type() {
 		return content_type;

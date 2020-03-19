@@ -188,7 +188,7 @@ public class SimpleSwiftClient {
 	 * Used to backup a folder on our remote swift container using a password protected zip file
 	 * @param folderPath the source file, the last part will be used to generate the zip file name (e.g. ancestor/parent/child becomes child.zip)
 	 * @param password the password used to protect the zip file
-	 * @return
+	 * @return a void promise, successful if the folder was zipped, sent and the temp zip was deleted 
 	 */
 	public Future<Void> backupFolder(String folderPath, String password) {
 		Promise<Void> result = Promise.promise();
