@@ -19,7 +19,7 @@ Include the following dependency in your **pom.xml** file:
 <dependency>
   <groupId>io.github.slacesa.simpleSwiftClient</groupId>
   <artifactId>simple_swift_client</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 Please check the latest version number on [Simple Swift Client Maven repository](https://mvnrepository.com/artifact/io.github.slacesa.simpleSwiftClient/simple_swift_client)
