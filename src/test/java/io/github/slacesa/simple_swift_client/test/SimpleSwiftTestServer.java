@@ -2,6 +2,7 @@ package io.github.slacesa.simple_swift_client.test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
 
@@ -16,8 +17,6 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -29,7 +28,7 @@ import io.vertx.ext.web.handler.BodyHandler;
  */
 public class SimpleSwiftTestServer {
 
-	private static Logger log = LoggerFactory.getLogger(SimpleSwiftTestServer.class);
+	private static final Logger log = Logger.getLogger(SimpleSwiftTestServer.class.getName());
 	private static HttpServer server;
 	private static SimpleSwiftTestServer thisServer;
 
@@ -46,7 +45,7 @@ public class SimpleSwiftTestServer {
 
 	public static Future<HttpServer> getTestServer(Vertx vertx, SwiftConfig config) {
 		if(thisServer == null) {
-			log.debug("Launching Web Server");
+			log.fine("Launching Web Server");
 			thisServer = new SimpleSwiftTestServer(vertx, config);
 			return thisServer.initTestServer();
 		}
@@ -86,7 +85,7 @@ public class SimpleSwiftTestServer {
 			if(ar.succeeded()) {
 				server = ar.result();
 				result.complete(server);
-				log.debug("Web server launched");
+				log.fine("Web server launched");
 			}
 			else result.fail(ar.cause());
 		});
@@ -127,7 +126,7 @@ public class SimpleSwiftTestServer {
 		}
 		// TODO Could also check the validity of headers, as checksum,  
 		String filename = null;
-		for(String p : routingContext.normalisedPath().split("/")) {
+		for(String p : routingContext.normalizedPath().split("/")) {
 			filename = p;
 		}
 		boolean found = false;
@@ -156,7 +155,7 @@ public class SimpleSwiftTestServer {
 			return;
 		}
 		String filename = null;
-		for(String p : routingContext.normalisedPath().split("/")) {
+		for(String p : routingContext.normalizedPath().split("/")) {
 			filename = p;
 		}
 		boolean found = false;

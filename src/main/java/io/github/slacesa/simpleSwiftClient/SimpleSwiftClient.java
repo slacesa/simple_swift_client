@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
 
@@ -19,8 +20,6 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.impl.NoStackTraceThrowable;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 
@@ -41,7 +40,7 @@ public class SimpleSwiftClient {
 
 	private static SimpleSwiftClient swiftClient;
 	
-	private static final Logger log = LoggerFactory.getLogger(SimpleSwiftClient.class);
+	private static final Logger log = Logger.getLogger(SimpleSwiftClient.class.getName());
 
 	/**
 	 * Retrieve a singleton simple Swift Client, if already initialized it overwrites previous configuration
@@ -54,7 +53,7 @@ public class SimpleSwiftClient {
 		if(force) swiftClient.config = config;
 		else swiftClient = new SimpleSwiftClient(config);
 
-		swiftClient.retrieveToken(force).setHandler(ar -> {
+		swiftClient.retrieveToken(force).onComplete(ar -> {
 			if(ar.succeeded())
 				result.complete(swiftClient);
 			else
@@ -80,7 +79,7 @@ public class SimpleSwiftClient {
 	 */
 	public Future<List<SwiftFile>> getFileList() {
 		Promise<List<SwiftFile>> result = Promise.promise();
-		getter(null).setHandler(response -> {
+		getter(null).onComplete(response -> {
 			try {
 				if(response.succeeded() && response.result().statusCode() == 200)
 					result.complete(Arrays.asList(Json.decodeValue(response.result().bodyAsBuffer(), SwiftFile[].class)));
@@ -101,7 +100,7 @@ public class SimpleSwiftClient {
 	 */
 	public Future<Integer> unsealFile(String filename) {
 		Promise<Integer> result = Promise.promise();
-		getter(filename).setHandler(response -> {
+		getter(filename).onComplete(response -> {
 			if(response.succeeded()) {
 				if(response.result().statusCode() == 429)
 					result.complete(Integer.valueOf(response.result().getHeader("Retry-After")));
@@ -123,7 +122,7 @@ public class SimpleSwiftClient {
 	 */
 	public Future<Buffer> downloadFile(String filename) {
 		Promise<Buffer> result = Promise.promise();
-		getter(filename).setHandler(response -> {
+		getter(filename).onComplete(response -> {
 			if(response.succeeded()) {
 				if(response.result().statusCode() == 200)
 					result.complete(response.result().bodyAsBuffer());
@@ -147,7 +146,7 @@ public class SimpleSwiftClient {
 	public Future<Boolean> uploadFile(String filename) {
 		Promise<Boolean> result = Promise.promise();
 		localReadFile(filename).compose(fileContent -> 
-		putter(filename, fileContent).setHandler(isSent ->{
+		putter(filename, fileContent).onComplete(isSent ->{
 			result.complete(isSent.succeeded() && isSent.result());
 		})).otherwise(t1 -> {
 			result.fail(new NoStackTraceThrowable("File not found"));
@@ -165,7 +164,7 @@ public class SimpleSwiftClient {
 	 */
 	public Future<Boolean> uploadFile(String filename, Buffer fileContent) {
 		Promise<Boolean> result = Promise.promise(); 
-		putter(filename, fileContent).setHandler(isSent ->{
+		putter(filename, fileContent).onComplete(isSent ->{
 			result.complete(isSent.succeeded() && isSent.result());
 		});
 		return result.future();
@@ -178,7 +177,7 @@ public class SimpleSwiftClient {
 	 */
 	public Future<Boolean> deleteFile(String filename) {
 		Promise<Boolean> result = Promise.promise();
-		deleter(filename).setHandler(isDeleted ->{
+		deleter(filename).onComplete(isDeleted ->{
 			result.complete(isDeleted.succeeded() && isDeleted.result());
 		});
 		return result.future();
@@ -196,7 +195,7 @@ public class SimpleSwiftClient {
 		String zipFileName = folders[folders.length-1]+".zip";
 		zipper.zipFolder(zipFileName, folderPath, password).compose(v ->
 		uploadFile(zipFileName).compose(isSent ->
-		localDeleteFile(zipFileName).setHandler(v2 -> {
+		localDeleteFile(zipFileName).onComplete(v2 -> {
 			if(v2.succeeded()) result.complete();
 		}))).otherwise(err -> {
 			result.fail(err.getCause());
@@ -246,7 +245,7 @@ public class SimpleSwiftClient {
 			.sendJsonObject(authMessage, ar -> {
 				if(ar.succeeded() && (ar.result().statusCode() == 200 || ar.result().statusCode() == 201)) {
 					token = ar.result().getHeader("X-Subject-Token");
-					log.debug("Token " + token);
+					log.fine("Token " + token);
 					JsonObject bodyResponse = ar.result().bodyAsJsonObject();
 					token_expires = DateTime.parse(bodyResponse.getJsonObject("token").getString("expires_at"));
 					// Sets a timer to refresh token one hour before expiration
@@ -257,7 +256,7 @@ public class SimpleSwiftClient {
 				}
 				else {
 					token = null;
-					log.info(ar.result().statusCode());
+					log.info(String.valueOf(ar.result().statusCode()));
 					log.info(ar.result().bodyAsString());
 					result.fail(ar.succeeded()?new NoStackTraceThrowable("Status Code not 200 OK"):ar.cause());
 				}
