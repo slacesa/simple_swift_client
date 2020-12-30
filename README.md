@@ -1,5 +1,5 @@
 # Simple Swift Client
-[![vertx 3.8.5](https://img.shields.io/badge/vert.x-3.8.5-purple.svg)](https://vertx.io)
+[![vertx 4.0.0](https://img.shields.io/badge/vert.x-4.0.0-purple.svg)](https://vertx.io)
 
 This **Java** library provides simple tools to authenticate with **Keystone v3** to your cloud storage using **Swift APIs** allowing the following operations:
 * Authentication
@@ -19,7 +19,7 @@ Include the following dependency in your **pom.xml** file:
 <dependency>
   <groupId>io.github.slacesa.simpleSwiftClient</groupId>
   <artifactId>simple_swift_client</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 Please check the latest version number on [Simple Swift Client Maven repository](https://mvnrepository.com/artifact/io.github.slacesa.simpleSwiftClient/simple_swift_client)
