@@ -255,9 +255,13 @@ public class SimpleSwiftClient {
 					result.complete(token);
 				}
 				else {
+					//Fail, but retry after 1 minute
 					token = null;
-					log.info(String.valueOf(ar.result().statusCode()));
-					log.info(ar.result().bodyAsString());
+					vertx.setTimer(60000, timer -> {
+						retrieveToken(true);
+					});
+					//log.info(String.valueOf(ar.result().statusCode()));
+					//log.info(ar.result().bodyAsString());
 					result.fail(ar.succeeded()?new NoStackTraceThrowable("Status Code not 200 OK"):ar.cause());
 				}
 			});
