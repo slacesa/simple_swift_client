@@ -33,7 +33,7 @@
         <slf4j.version>1.7.30</slf4j.version>
         <zip4j.version>2.6.4</zip4j.version>
         <jodatime.version>2.10.9</jodatime.version>
-        <jackson.version>2.11.4</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
