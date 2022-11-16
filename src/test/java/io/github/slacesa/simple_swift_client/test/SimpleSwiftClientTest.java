@@ -71,8 +71,7 @@ public class SimpleSwiftClientTest {
 					else result.fail(ar.cause());
 				}
 				catch (Exception e) {
-					log.info(e.getCause().getMessage());
-					result.fail(e.getCause());
+					log.info(e.getCause().toString());
 				}
 			});
 		}
