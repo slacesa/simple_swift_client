@@ -4,7 +4,7 @@
 
     <groupId>io.github.slacesa.simpleSwiftClient</groupId>
     <artifactId>simple_swift_client</artifactId>
-    <version>1.0.11-SNAPSHOT</version>
+    <version>1.0.11</version>
 
 	<name>Simple Swift Client</name>
 	<description>A simple swift Client, providing basic Keystone v3 methods for authentication and simple access to files </description>
@@ -29,11 +29,11 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <vertx.version>4.3.4</vertx.version>
+        <vertx.version>4.3.8</vertx.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <zip4j.version>2.10.0</zip4j.version>
+        <zip4j.version>2.11.3</zip4j.version>
         <jodatime.version>2.10.9</jodatime.version>
-        <jackson.version>2.13.4.1</jackson.version>
+        <jackson.version>2.13.4.2</jackson.version>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -225,7 +225,7 @@
 		<connection>scm:git:git://github.com/slacesa/dependent-tasks-executor.git</connection>
 		<developerConnection>scm:git:git@github.com:slacesa/simple_swift_client.git</developerConnection>
 		<url>https://github.com/slacesa/simple_swift_client</url>
-		<tag>HEAD</tag>
+		<tag>simple_swift_client-1.0.11</tag>
 	</scm>
 
 	<distributionManagement>
