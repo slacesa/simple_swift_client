@@ -22,6 +22,7 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import io.vertx.uritemplate.UriTemplate;
 
 /**
  * Simple Swift Client, used to connect to authenticate, upload, list and download files from cold storage
@@ -353,7 +354,7 @@ public class SimpleSwiftClient {
 		webclient.put(
 				config.getPort(),
 				config.getStorage_host(),
-				config.getStorage_endpoint()+"/"+filename)
+				UriTemplate.of(config.getStorage_endpoint()+"/"+filename))
 		.ssl(config.getPort()==443)
 		.putHeader("X-Storage-Policy", "PCA")
 		.putHeader("X-Auth-Token", token)
